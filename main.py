@@ -23,9 +23,7 @@ def verify_line_signature(body: bytes, signature: str) -> bool:
     """驗證 LINE Webhook 簽章，防止非法請求。"""
     if not LINE_CHANNEL_SECRET:
         return True  # 開發環境可略過
-    digest = hmac.new(
-        LINE_CHANNEL_SECRET.encode("utf-8"), body, hashlib.sha256
-    ).digest()
+    digest = hmac.new(LINE_CHANNEL_SECRET.encode("utf-8"), body, hashlib.sha256).digest()
     expected = base64.b64encode(digest).decode("utf-8")
     return hmac.compare_digest(expected, signature)
 
