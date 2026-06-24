@@ -14,15 +14,16 @@ fmt:
 
 fmt-check:
     uv run ruff format --check --diff .
-#靜態檢查
+
 lint:
     uv run ruff check .
+
 lint-fix:
     uv run ruff check --fix .
-#建置
+
 build:
     uv run build
-#建置docker
+
 docker-build:
     docker compose build
 
@@ -34,9 +35,3 @@ docker-down:
 
 docker-logs:
     docker compose logs -f
-
-
-ci: 
-    just fmt-check
-    just lint
-    just build
