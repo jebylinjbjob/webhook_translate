@@ -2,6 +2,7 @@ import base64
 import hashlib
 import hmac
 import json
+import logging
 import os
 
 import httpx
@@ -10,6 +11,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
 
 LINE_ACCESS_TOKEN = os.getenv("LINE_ACCESS_TOKEN", "")
 LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET", "")
@@ -83,7 +87,12 @@ async def reply_to_line(reply_token: str, text: str) -> None:
         "messages": [{"type": "text", "text": text}],
     }
     async with httpx.AsyncClient(timeout=10) as client:
-        await client.post(url, headers=headers, json=payload)
+        resp = await client.post(url, headers=headers, json=payload)
+
+    if resp.status_code != 200:
+        logger.error("LINE reply failed: status=%s body=%s", resp.status_code, resp.text)
+    else:
+        logger.info("LINE reply sent: status=%s", resp.status_code)
 
 
 @app.get("/")
@@ -204,7 +213,9 @@ async def webhook(request: Request):
         if not user_text or not reply_token:
             continue
 
+        logger.info("Translating: %r", user_text)
         translated = await call_groq_translate(user_text)
+        logger.info("Translated: %r", translated)
         await reply_to_line(reply_token, translated)
 
     return JSONResponse(content={"status": "ok"})
