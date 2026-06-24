@@ -8,7 +8,7 @@ import os
 import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import JSONResponse
 
 load_dotenv()
 
@@ -98,92 +98,6 @@ async def reply_to_line(reply_token: str, text: str) -> None:
 @app.get("/")
 async def health_check():
     return {"status": "ok", "service": "webhook-translate"}
-
-
-_HTML_STYLE = """
-  <style>
-    body {
-      font-family: sans-serif; max-width: 720px;
-      margin: 40px auto; padding: 0 20px;
-      line-height: 1.8; color: #333;
-    }
-    h1 { font-size: 1.6rem; border-bottom: 2px solid #06C755; padding-bottom: 8px; }
-    h2 { font-size: 1.1rem; margin-top: 2rem; }
-  </style>
-"""
-
-
-@app.get("/privacy", response_class=HTMLResponse)
-async def privacy_policy():
-    line_url = "https://developers.line.biz/en/docs/line-developers-console/overview/"
-    return f"""<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>隱私權政策</title>
-  {_HTML_STYLE}
-</head>
-<body>
-  <h1>隱私權政策</h1>
-  <p>最後更新：2026 年 6 月</p>
-
-  <h2>1. 收集的資料</h2>
-  <p>本服務（中印雙向翻譯 LINE Bot）僅處理使用者透過 LINE 傳送的文字訊息，
-  用於執行翻譯功能。我們不會儲存任何訊息內容或個人識別資訊。</p>
-
-  <h2>2. 資料使用方式</h2>
-  <p>使用者傳送的文字會即時轉送至 Groq API 進行翻譯，
-  翻譯完成後立即回傳，不會保留於伺服器。</p>
-
-  <h2>3. 第三方服務</h2>
-  <p>本服務使用以下第三方服務：</p>
-  <ul>
-    <li><a href="{line_url}" target="_blank">LINE Messaging API</a></li>
-    <li><a href="https://groq.com/privacy-policy/" target="_blank">Groq API</a></li>
-  </ul>
-
-  <h2>4. 聯絡方式</h2>
-  <p>如有任何疑問，請透過 LINE 官方帳號與我們聯繫。</p>
-</body>
-</html>"""
-
-
-@app.get("/terms", response_class=HTMLResponse)
-async def terms_of_service():
-    return f"""<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>服務條款</title>
-  {_HTML_STYLE}
-</head>
-<body>
-  <h1>服務條款</h1>
-  <p>最後更新：2026 年 6 月</p>
-
-  <h2>1. 服務說明</h2>
-  <p>本服務提供中文與印尼文之間的雙向即時翻譯，透過 LINE 訊息平台運作，
-  適合家庭照護溝通使用。</p>
-
-  <h2>2. 使用規範</h2>
-  <ul>
-    <li>請勿傳送違法、歧視性或侵害他人權益的內容。</li>
-    <li>本服務僅供翻譯用途，不得用於任何商業轉售行為。</li>
-  </ul>
-
-  <h2>3. 免責聲明</h2>
-  <p>翻譯結果由 AI 模型產生，可能存在誤差，請勿用於醫療、法律等需要高度精確性的場合。
-  本服務不對翻譯內容的準確性負擔法律責任。</p>
-
-  <h2>4. 服務變更與終止</h2>
-  <p>我們保留隨時修改或終止服務的權利，恕不另行通知。</p>
-
-  <h2>5. 聯絡方式</h2>
-  <p>如有任何疑問，請透過 LINE 官方帳號與我們聯繫。</p>
-</body>
-</html>"""
 
 
 @app.post("/webhook")

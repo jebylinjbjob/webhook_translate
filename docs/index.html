@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中印翻譯小幫手</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #06C755;
+      --green-dark: #05a847;
+      --bg: #f0faf4;
+      --text: #1a1a1a;
+      --muted: #666;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--green);
+      color: #fff;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo { font-size: 2rem; }
+    header h1 { font-size: 1.3rem; font-weight: 700; }
+    header p  { font-size: 0.85rem; opacity: 0.9; }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: #e6f9ee;
+      color: var(--green-dark);
+      border: 1px solid #b3eeca;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+    .hero h2 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .hero h2 span { color: var(--green); }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+    .hero .flags {
+      font-size: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .hero .flags .arrow {
+      font-size: 1.4rem;
+      color: var(--green);
+      animation: bounce 1.6s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(0); }
+      50%      { transform: translateX(6px); }
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--green);
+    }
+    .card .icon { font-size: 2rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .card p  { font-size: 0.9rem; color: var(--muted); }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      background: var(--card-bg);
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .how h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 40px;
+    }
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 160px;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -16px;
+      top: 28px;
+      font-size: 1.4rem;
+      color: var(--green);
+    }
+    .step .num {
+      width: 52px; height: 52px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .step p { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--green); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">💬</div>
+    <div>
+      <h1>中印翻譯小幫手</h1>
+      <p>Asisten Terjemahan Cina–Indonesia</p>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="badge">🟢 服務運作中</div>
+    <h2>讓溝通<span>不再有距離</span></h2>
+    <p>透過 LINE 即時翻譯中文與印尼文，<br>專為家庭照護場景設計。</p>
+    <div class="flags">
+      <span>🇹🇼</span>
+      <span class="arrow">⇄</span>
+      <span>🇮🇩</span>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="card">
+      <div class="icon">⚡</div>
+      <h3>即時翻譯</h3>
+      <p>平均回應時間不到 1 秒，由 Groq 高速推論引擎驅動。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔄</div>
+      <h3>雙向自動偵測</h3>
+      <p>輸入中文自動翻成印尼文，輸入印尼文自動翻成繁體中文。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔒</div>
+      <h3>安全驗證</h3>
+      <p>每個請求皆驗證 LINE 簽章，確保訊息來源合法可信。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏠</div>
+      <h3>照護場景優化</h3>
+      <p>翻譯風格親切易懂，適合家人與看護日常溝通使用。</p>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>如何使用？</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <p>加入 LINE 官方帳號好友</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <p>用中文或印尼文傳送訊息</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <p>Bot 自動偵測語言並翻譯</p>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <p>立即收到翻譯結果</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <a href="https://github.com/jebylinjbjob/webhook_translate" target="_blank">GitHub</a> ·
+      <a href="privacy.html">隱私權政策</a> ·
+      <a href="terms.html">服務條款</a>
+    </p>
+    <p style="margin-top:8px">© 2026 webhook-translate · Powered by
+      <a href="https://groq.com" target="_blank">Groq</a> &amp;
+      <a href="https://fastapi.tiangolo.com" target="_blank">FastAPI</a>
+    </p>
+  </footer>
+
+</body>
+</html>
