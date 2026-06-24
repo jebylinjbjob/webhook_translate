@@ -1,0 +1,74 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #06C755;
+  --green-dark: #05a847;
+  --text: #333;
+  --muted: #888;
+  --border: #eee;
+}
+
+body {
+  font-family: "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+a { color: var(--green); }
+
+/* ── NAV ── */
+nav {
+  margin-bottom: 32px;
+  font-size: 0.85rem;
+}
+nav a {
+  text-decoration: none;
+  color: var(--green);
+}
+nav a:hover { text-decoration: underline; }
+
+/* ── HEADINGS ── */
+h1 {
+  font-size: 1.6rem;
+  border-bottom: 3px solid var(--green);
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 28px 0 8px;
+  color: #111;
+}
+
+/* ── CONTENT ── */
+.updated {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+
+p, li {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li { margin-bottom: 4px; }
+
+/* ── FOOTER ── */
+footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
