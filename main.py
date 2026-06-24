@@ -106,10 +106,7 @@ _HTML_STYLE = """
 
 @app.get("/privacy", response_class=HTMLResponse)
 async def privacy_policy():
-    line_url = (
-        "https://developers.line.biz/en/docs/"
-        "line-developers-console/overview/"
-    )
+    line_url = "https://developers.line.biz/en/docs/line-developers-console/overview/"
     return f"""<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
