@@ -2,8 +2,8 @@ FROM python:3.12-alpine
 
 WORKDIR /app
 
-# 安裝 uv
-RUN pip install uv --no-cache-dir
+# 升級 pip（修 CVE-2026-3219）並安裝 uv
+RUN pip install --upgrade pip uv --no-cache-dir
 
 # 複製依賴設定
 COPY pyproject.toml uv.lock ./
