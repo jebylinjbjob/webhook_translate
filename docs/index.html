@@ -162,6 +162,31 @@
     }
     footer a { color: var(--green); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+
+    /* ── LINE FAB ── */
+    .line-fab {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 999px;
+      padding: 12px 20px 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 20px rgba(6,199,85,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+      z-index: 999;
+    }
+    .line-fab:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(6,199,85,0.55);
+    }
+    .line-fab:active { transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -175,7 +200,6 @@
   </header>
 
   <section class="hero">
-    <div class="badge">🟢 服務運作中</div>
     <h2>讓溝通<span>不再有距離</span></h2>
     <p>透過 LINE 即時翻譯中文與印尼文，<br>專為家庭照護場景設計。</p>
     <div class="flags">
@@ -229,6 +253,15 @@
       </div>
     </div>
   </section>
+
+  <!-- 右下角加入 LINE 好友按鈕 -->
+  <a href="https://line.me/R/ti/p/@763belvk" target="_blank" class="line-fab" aria-label="加入 LINE 好友">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32">
+      <path fill="#fff" d="M24 4C12.95 4 4 11.86 4 21.5c0 5.7 3.13 10.77 8 14.1V42l6.3-3.46A22.2 22.2 0 0024 39c11.05 0 20-7.86 20-17.5S35.05 4 24 4z"/>
+      <path fill="#06C755" d="M14 24.5v-6h2v4.5h3v1.5h-5zm6.5 0v-6h2v6h-2zm3.5 0v-6h2l3 4v-4h2v6h-2l-3-4v4h-2zm8 0v-6h5v1.5h-3V21h3v1.5h-3v.5h3v1.5h-5z"/>
+    </svg>
+    <span>加入好友</span>
+  </a>
 
   <footer>
     <p>
