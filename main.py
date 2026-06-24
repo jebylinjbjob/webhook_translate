@@ -42,7 +42,15 @@ _CODE_SIGNATURES = (
     "System.out",
 )
 
-groq_client = AsyncGroq()  # 自動讀取環境變數 GROQ_API_KEY
+_groq_client: AsyncGroq | None = None
+
+
+def get_groq_client() -> AsyncGroq:
+    """延遲初始化 Groq client，讓單元測試可在無金鑰時 import 本模組。"""
+    global _groq_client
+    if _groq_client is None:
+        _groq_client = AsyncGroq()  # 自動讀取環境變數 GROQ_API_KEY
+    return _groq_client
 
 
 def looks_like_code(text: str) -> bool:
@@ -55,6 +63,29 @@ def looks_like_code(text: str) -> bool:
     if symbol_count >= 3:
         return True
     return False
+
+
+def extract_translation(raw: str) -> str:
+    """從模型回傳的 JSON 取出 translation 欄位並做輸出端把關。
+
+    任何不合法 JSON、空結果或含程式碼特徵的輸出，
+    一律回傳安全訊息，避免被注入內容污染回覆。
+    """
+    try:
+        parsed = json.loads(raw)
+        result = str(parsed.get("translation", "")).strip()
+    except (json.JSONDecodeError, AttributeError):
+        logger.warning("Translation output not valid JSON (possible injection): %r", raw[:100])
+        return SAFE_REJECT_MESSAGE
+
+    if not result:
+        return SAFE_REJECT_MESSAGE
+
+    if looks_like_code(result):
+        logger.warning("Blocked code-like output (possible prompt injection): %r", result[:100])
+        return SAFE_REJECT_MESSAGE
+
+    return result
 
 
 app = FastAPI(title="webhook-translate", version="0.1.0")
@@ -75,7 +106,7 @@ async def call_groq_translate(text: str) -> str:
     safe_text = text[:MAX_INPUT_CHARS]
 
     try:
-        completion = await groq_client.chat.completions.create(
+        completion = await get_groq_client().chat.completions.create(
             model=GROQ_MODEL,
             temperature=0.3,
             response_format={"type": "json_object"},
@@ -111,23 +142,8 @@ async def call_groq_translate(text: str) -> str:
 
     raw = completion.choices[0].message.content.strip()
 
-    # 只取 JSON 的 translation 欄位，其餘污染內容一律捨棄
-    try:
-        parsed = json.loads(raw)
-        result = str(parsed.get("translation", "")).strip()
-    except (json.JSONDecodeError, AttributeError):
-        logger.warning("Translation output not valid JSON (possible injection): %r", raw[:100])
-        return SAFE_REJECT_MESSAGE
-
-    if not result:
-        return SAFE_REJECT_MESSAGE
-
-    # 輸出端把關：翻譯機只應回傳文字，若結果像程式碼則攔截
-    if looks_like_code(result):
-        logger.warning("Blocked code-like output (possible prompt injection): %r", result[:100])
-        return SAFE_REJECT_MESSAGE
-
-    return result
+    # 只取 JSON 的 translation 欄位，並做輸出端把關
+    return extract_translation(raw)
 
 
 async def reply_to_line(reply_token: str, text: str) -> None:

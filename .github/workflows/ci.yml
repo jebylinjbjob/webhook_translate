@@ -36,6 +36,9 @@ jobs:
       - name: Lint
         run: just lint
 
+      - name: Unit tests
+        run: just test
+
   hurl:
     runs-on: ubuntu-latest
 
