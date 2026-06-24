@@ -1,22 +1,37 @@
-name: ci pipeline
+name: CI
 
 on:
   push:
     branches:
-      - "*"
+      - main
+      - "cursor/**"
+      - "feat/**"
   pull_request:
     branches:
-      - "*"
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          fetch-depth: 0
-      - name: install just 
-        run: curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin\
-      - name: Run just ci
-        run: just ci
+          enable-cache: true
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Install dependencies
+        run: uv sync --all-groups --frozen
+
+      - name: Format check
+        run: just fmt-check
+
+      - name: Lint
+        run: just lint
