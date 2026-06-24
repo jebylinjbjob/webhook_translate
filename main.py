@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 LINE_ACCESS_TOKEN = os.getenv("LINE_ACCESS_TOKEN", "")
 LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET", "")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 MAX_INPUT_CHARS = 500
 
 groq_client = AsyncGroq()  # 自動讀取環境變數 GROQ_API_KEY
