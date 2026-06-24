@@ -35,3 +35,17 @@ jobs:
 
       - name: Lint
         run: just lint
+
+  hurl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Run Hurl tests in containers
+        run: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from hurl
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f docker-compose.test.yml down

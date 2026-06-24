@@ -1,0 +1,26 @@
+# 獨立的測試用 compose，不依賴 .env。
+# 使用 dummy 金鑰讓應用程式能啟動，但測試案例不會觸發真實 API 呼叫。
+# 用法：docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from hurl
+services:
+  app:
+    build: .
+    environment:
+      # 僅供啟動用的假金鑰；測試案例不會走到實際的 Groq/LINE 呼叫
+      GROQ_API_KEY: "test-dummy-key"
+      LINE_ACCESS_TOKEN: "test-token"
+      # 刻意不設定 LINE_CHANNEL_SECRET，使簽章驗證在測試時自動略過
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+  hurl:
+    image: ghcr.io/orange-opensource/hurl:latest
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - ./tests:/tests:ro
+    command: ["--test", "--variable", "host=http://app:8000", "/tests"]
