@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import base64
+import json
 import os
 
 import httpx
@@ -22,9 +23,7 @@ def verify_line_signature(body: bytes, signature: str) -> bool:
     """驗證 LINE Webhook 簽章，防止非法請求。"""
     if not LINE_CHANNEL_SECRET:
         return True  # 開發環境可略過
-    digest = hmac.new(
-        LINE_CHANNEL_SECRET.encode("utf-8"), body, hashlib.sha256
-    ).digest()
+    digest = hmac.new(LINE_CHANNEL_SECRET.encode("utf-8"), body, hashlib.sha256).digest()
     expected = base64.b64encode(digest).decode("utf-8")
     return hmac.compare_digest(expected, signature)
 
@@ -100,7 +99,10 @@ async def webhook(request: Request):
     if not verify_line_signature(body, signature):
         raise HTTPException(status_code=400, detail="Invalid signature")
 
-    data = await request.json()
+    try:
+        data = json.loads(body)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
     events = data.get("events", [])
 
     for event in events:
