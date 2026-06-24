@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import base64
+import json
 import os
 
 import httpx
@@ -100,7 +101,10 @@ async def webhook(request: Request):
     if not verify_line_signature(body, signature):
         raise HTTPException(status_code=400, detail="Invalid signature")
 
-    data = await request.json()
+    try:
+        data = json.loads(body)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
     events = data.get("events", [])
 
     for event in events:
